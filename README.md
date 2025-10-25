@@ -2,7 +2,7 @@
 
 Use all sensors and switches of the Home Control Unit (HCU) from Homematic with Home Assistant.
 
-![alt text](https://github.com/user-attachments/assets/3ad2cd07-9ad7-498e-9e16-65ca537f83f6)
+![alt text](https://github.com/user-attachments/assets/c669f06f-cb15-4fdc-929a-556bfb55990e)
 
 ## Installation
 
