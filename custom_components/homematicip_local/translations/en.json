@@ -1,0 +1,27 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "HomematicIP Local HCU",
+                "description": "Enter the HCU host and activation key. If you already have an auth token, tick the checkbox to provide it in the next step.",
+                "data": {
+                    "host": "Host/IP",
+                    "activation_key": "Activation key (6 alphanumeric)",
+                    "existing_credentials": "I already have an auth token"
+                }
+            },
+            "credentials": {
+                "title": "Provide existing credentials",
+                "description": "Enter your existing auth token. We'll attempt to confirm it; failures are allowed.",
+                "data": {
+                    "auth_token": "Auth token"
+                }
+            }
+        },
+        "error": {
+            "invalid_activation_key": "Activation key must be exactly 6 alphanumeric characters.",
+            "cannot_connect": "Failed to connect to HCU.",
+            "unknown": "Unexpected error."
+        }
+    }
+}
