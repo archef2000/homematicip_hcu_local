@@ -52,17 +52,10 @@ ActionParameter: TypeAlias = Literal["NOT_CUSTOMISABLE"]
 
 
 class PushButtonSupportedOptionalFeatures(TypedDict):
-    IFeatureDoorLockAuthorizationSensorChannel: bool
     IOptionalFeatureLongPressSupported: bool
-    IFeatureGarageGroupSensorChannel: bool
-    IOptionalFeatureDoorBellSensorEventTimestamp: bool
     IOptionalFeatureDoublePressTime: bool
-    IFeatureLightGroupSensorChannel: bool
-    IOptionalFeatureAcousticSendStateEnabled: bool
-    IFeatureAccessAuthorizationSensorChannel: bool
-    IFeatureWateringGroupSensorChannel: bool
-    IFeatureVentilationGroupSensorChannel: bool
-    IFeatureShadingGroupSensorChannel: bool
+    IFeatureLightGroupSensorChannel: bool | None
+    IFeatureShadingGroupSensorChannel: bool | None
 
 
 class _BaseFunctionalChannel(TypedDict):
@@ -86,12 +79,13 @@ class SingleKeyFunctionalChannel(_BaseFunctionalChannel):
 
 LiveUpdateState: TypeAlias = Literal["LIVE_UPDATE_NOT_SUPPORTED"]
 OEM: TypeAlias = Literal["eQ-3"] | str
-UpdateState: TypeAlias = Literal["UP_TO_DATE", "TRANSFERING_UPDATE"]
+UpdateState: TypeAlias = Literal[
+    "UP_TO_DATE", "TRANSFERING_UPDATE", "UPDATE_AVAILABLE", "UPDATE_AUTHORIZED"
+]
 
 
 class HeatingThermostatSupportedOptionalFeatures(TypedDict):
-    IOptionalFeatureBoostSignalColor: bool
-    IOptionalFeatureThermostatCoolingSupported: bool
+    pass
 
 
 class HeatingThermostatFunctionalChannel(_BaseFunctionalChannel):
@@ -111,53 +105,11 @@ class HeatingThermostatFunctionalChannel(_BaseFunctionalChannel):
 
 
 class DeviceOperationlockSupportedOptionalFeatures(TypedDict):
-    IFeatureDeviceParticulateMatterSensorCommunicationError: bool
-    IFeatureDeviceCoProRestart: bool
-    IFeatureDeviceOverheated: bool
-    IFeatureDeviceMountingModuleError: bool
-    IOptionalFeatureInvertedDisplayColors: bool
-    IFeatureTicVersionError: bool
-    IFeatureDeviceDaliBusError: bool
     IOptionalFeatureDutyCycle: bool
-    IFeatureMulticastRouter: bool
-    IOptionalFeatureDeviceSwitchChannelMode: bool
-    IFeaturePowerShortCircuit: bool
-    IOptionalFeatureDeviceValveError: bool
-    IFeatureDeviceDriveModeError: bool
-    IFeatureDeviceTempSensorError: bool
-    IFeatureDeviceTemperatureHumiditySensorCommunicationError: bool
-    IFeatureDeviceDriveError: bool
     IFeatureRssiValue: bool
-    IFeatureNoDataFromLinkyError: bool
-    IFeatureBusConfigMismatch: bool
-    IOptionalFeatureOperationDays: bool
-    IOptionalFeatureDeviceFrostProtectionError: bool
-    IOptionalFeatureDisplayMode: bool
-    IFeatureDeviceOverloaded: bool
-    IOptionalFeatureDisplayContrast: bool
-    IFeatureDeviceIdentify: bool
+    IOptionalFeatureDisplayContrast: bool | None
     IOptionalFeatureLowBat: bool
-    IOptionalFeatureMountingOrientation: bool
-    IFeatureDeviceTemperatureOutOfRange: bool
-    IFeatureDeviceTemperatureHumiditySensorError: bool
-    IOptionalFeatureDeviceErrorLockJammed: bool
-    IOptionalFeatureDeviceAliveSignalEnabled: bool
-    IFeatureProfilePeriodLimit: bool
-    IFeatureDeviceCoProUpdate: bool
-    IFeatureDeviceSensorCommunicationError: bool
-    IOptionalFeatureDefaultLinkedGroup: bool
-    IFeatureDevicePowerFailure: bool
-    IOptionalFeatureAltitude: bool
-    IOptionalFeatureDeviceInputLayoutMode: bool
-    IFeatureShortCircuitDataLine: bool
-    IFeatureDeviceSensorError: bool
-    IOptionalFeatureDeviceOperationMode: bool
-    IFeatureDeviceCommunicationError: bool
-    IFeatureDeviceUndervoltage: bool
-    IFeatureDeviceParticulateMatterSensorError: bool
-    IFeatureDeviceCoProError: bool
-    IFeatureDataDecodingFailedError: bool
-    IOptionalFeatureDeviceWaterError: bool
+    IOptionalFeatureMountingOrientation: bool | None
 
 
 class DeviceOperationlockFunctionalChannel(_BaseFunctionalChannel):
@@ -218,6 +170,9 @@ class DeviceOperationlockFunctionalChannel(_BaseFunctionalChannel):
     dataDecodingFailedError: None
     ticVersionError: None
     operationLockActive: bool
+    deviceCanBusError: None
+    notRechargeableBattery: None
+    fanControlMode: None
 
 
 class HeatingThermostatDevice(TypedDict):
@@ -252,67 +207,20 @@ class HeatingThermostatDevice(TypedDict):
 
 
 class DeviceBaseSupportedOptionalFeatures(TypedDict):
-    IFeatureDeviceParticulateMatterSensorCommunicationError: bool
-    IFeatureDeviceCoProRestart: bool
-    IFeatureDeviceOverheated: bool
-    IFeatureDeviceMountingModuleError: bool
-    IOptionalFeatureInvertedDisplayColors: bool
-    IFeatureTicVersionError: bool
-    IFeatureDeviceDaliBusError: bool
     IOptionalFeatureDutyCycle: bool
-    IFeatureMulticastRouter: bool
-    IOptionalFeatureDeviceSwitchChannelMode: bool
-    IFeaturePowerShortCircuit: bool
-    IOptionalFeatureDeviceValveError: bool
-    IFeatureDeviceDriveModeError: bool
-    IFeatureDeviceTempSensorError: bool
-    IFeatureDeviceTemperatureHumiditySensorCommunicationError: bool
-    IFeatureDeviceDriveError: bool
     IFeatureRssiValue: bool
-    IFeatureNoDataFromLinkyError: bool
-    IFeatureBusConfigMismatch: bool
-    IOptionalFeatureOperationDays: bool
-    IOptionalFeatureDeviceFrostProtectionError: bool
-    IOptionalFeatureDisplayMode: bool
-    IFeatureDeviceOverloaded: bool
-    IOptionalFeatureDisplayContrast: bool
-    IFeatureDeviceIdentify: bool
-    IOptionalFeatureLowBat: bool
-    IFeatureDeviceTemperatureOutOfRange: bool
-    IFeatureDeviceTemperatureHumiditySensorError: bool
-    IOptionalFeatureDeviceErrorLockJammed: bool
-    IOptionalFeatureDeviceAliveSignalEnabled: bool
-    IFeatureProfilePeriodLimit: bool
-    IFeatureDeviceCoProUpdate: bool
-    IFeatureDeviceSensorCommunicationError: bool
-    IOptionalFeatureDefaultLinkedGroup: bool
-    IFeatureDevicePowerFailure: bool
-    IOptionalFeatureAltitude: bool
-    IOptionalFeatureDeviceInputLayoutMode: bool
-    IFeatureShortCircuitDataLine: bool
-    IFeatureDeviceSensorError: bool
-    IOptionalFeatureDeviceOperationMode: bool
-    IFeatureDeviceCommunicationError: bool
-    IFeatureDeviceUndervoltage: bool
-    IFeatureDeviceParticulateMatterSensorError: bool
-    IFeatureDeviceCoProError: bool
-    IFeatureDataDecodingFailedError: bool
-    IOptionalFeatureDeviceWaterError: bool
-    # rare
-    IOptionalFeatureMountingOrientation: bool | None
+    IOptionalFeatureLowBat: bool | None
+    IOptionalFeatureOperationDays: bool | None
+    IOptionalFeatureDeviceAliveSignalEnabled: bool | None
+    IFeatureDeviceOverheated: bool | None
+    IFeatureProfilePeriodLimit: bool | None
+    IFeatureDeviceOverloaded: bool | None
+    IFeatureDevicePowerFailure: bool | None
+    IFeatureDeviceCoProUpdate: bool | None
     IOptionalFeatureControlsMountingOrientation: bool | None
-    IOptionalFeatureColorTemperature: bool | None
-    IOptionalFeatureHueSaturationValue: bool | None
-    IOptionalFeaturePowerUpHueSaturationValue: bool | None
-    IOptionalFeaturePowerUpColorTemperature: bool | None
-    IOptionalFeatureLightSceneWithShortTimes: bool | None
-    IOptionalFeaturePowerUpSwitchState: bool | None
-    IOptionalFeatureColorTemperatureDynamicDaylight: bool | None
-    IOptionalFeaturePowerUpDimmerState: bool | None
-    IOptionalFeatureHardwareColorTemperature: bool | None
-    IOptionalFeatureColorTemperatureDim2Warm: bool | None
-    IOptionalFeatureLightScene: bool | None
-    IOptionalFeatureDimmerState: bool | None
+    IOptionalFeatureDeviceOperationMode: bool | None
+    IFeatureMulticastRouter: bool | None
+    IFeatureDeviceIdentify: bool | None
 
 
 class DeviceBaseFunctionalChannel(_BaseFunctionalChannel):
@@ -373,6 +281,9 @@ class DeviceBaseFunctionalChannel(_BaseFunctionalChannel):
     noDataFromLinkyError: None
     dataDecodingFailedError: None
     ticVersionError: None
+    deviceCanBusError: None
+    notRechargeableBattery: None
+    fanControlMode: None
 
 
 class MultiNodeInputChannelSupportedOptionalFeatures(TypedDict):
@@ -384,7 +295,6 @@ class MultiNodeInputChannelSupportedOptionalFeatures(TypedDict):
     IOptionalFeatureWindowState: bool
     IOptionalFeatureEventDelay: bool
     IFeatureAccessAuthorizationSensorChannel: bool
-    IFeatureWateringGroupSensorChannel: bool
     IFeatureShadingGroupSensorChannel: bool
 
 
@@ -482,12 +392,14 @@ class SwitchChannelInternalLinkConfiguration(TypedDict):
 
 
 class SwitchFunctionalSupportedOptionalFeatures(TypedDict):
-    IFeatureLightGroupActuatorChannel: bool
-    IFeatureAccessAuthorizationActuatorChannel: bool
-    IFeatureGarageGroupActuatorChannel: bool
+    IFeatureLightGroupActuatorChannel: bool | None
+    IFeatureAccessAuthorizationActuatorChannel: bool | None
+    IFeatureGarageGroupActuatorChannel: bool | None
     IOptionalFeatureInternalLinkConfiguration: bool
     IOptionalFeaturePowerUpSwitchState: bool
-    IFeatureLightProfileActuatorChannel: bool
+    IFeatureLightProfileActuatorChannel: bool | None
+    IFeatureDeviceIdentify: bool | None
+    IFeatureDevicePowerFailure: bool | None
 
 
 class SwitchFunctionalChannel(_BaseFunctionalChannel):
@@ -499,6 +411,7 @@ class SwitchFunctionalChannel(_BaseFunctionalChannel):
     on: bool
     internalLinkConfiguration: SwitchChannelInternalLinkConfiguration
     powerUpSwitchState: PowerUpSwitchState
+    switchVisualization: str | None
 
 
 class _SwitchDevice(TypedDict):
@@ -548,6 +461,7 @@ class MultiModeInputSwitchFunctionalChannel(_BaseFunctionalChannel):
     powerUpSwitchState: PowerUpSwitchState
     multiModeInputMode: Literal["KEY_BEHAVIOR"]
     binaryBehaviorType: Literal["NORMALLY_CLOSE"]
+    switchVisualization: str | None
 
 
 class DinRailSwitch4Device(_SwitchDevice):
@@ -560,15 +474,12 @@ class DinRailSwitch4Device(_SwitchDevice):
 
 class SwitchMeasuringSupportedOptionalFeatures(TypedDict):
     IFeatureLightGroupActuatorChannel: bool
-    IFeatureAccessAuthorizationActuatorChannel: bool
-    IFeatureGarageGroupActuatorChannel: bool
-    IOptionalFeatureInternalLinkConfiguration: bool
-    IOptionalFeatureEnergyMeterMode: bool
-    IOptionalFeatureEnergyCounterTwo: bool
+    IOptionalFeatureInternalLinkConfiguration: bool | None
     IOptionalFeaturePowerMeasuringCategory: bool
-    IOptionalFeatureCurrentDetectionBehavior: bool
+    IOptionalFeatureCurrentDetectionBehavior: bool | None
     IOptionalFeaturePowerUpSwitchState: bool
     IFeatureLightProfileActuatorChannel: bool
+    IOptionalFeatureEnergyMeterMode: bool | None
 
 
 class SwitchMeasuringFunctionalChannel(_BaseFunctionalChannel):
@@ -588,6 +499,7 @@ class SwitchMeasuringFunctionalChannel(_BaseFunctionalChannel):
     energyCounterTwo: None
     energyCounterTwoType: Literal["ENERGY_COUNTER_INPUT_SINGLE_TARIFF"]
     powerMeasuringCategory: Literal["OTHER"]
+    switchVisualization: str
 
 
 class SwitchingMeasuringDevice(TypedDict):
@@ -634,14 +546,12 @@ class SingleDimmerFunctionalChannelInternalLinkConfiguration(TypedDict):
 
 
 class DimmerSupportedOptionalFeatures(TypedDict):
-    IFeatureDeviceCoProRestart: bool
     IOptionalFeatureDimmerMode: bool
     IFeatureLightGroupActuatorChannel: bool
-    IFeatureDeviceOverheated: bool
+    IFeatureDeviceOverheated: bool | None
     IOptionalFeatureLedDimmingRange: bool
-    IOptionalFeatureInternalLinkConfiguration: bool
-    IFeatureDeviceOverloaded: bool
-    IFeatureDeviceCoProError: bool
+    IOptionalFeatureInternalLinkConfiguration: bool | None
+    IFeatureDeviceOverloaded: bool | None
     IOptionalFeaturePowerUpDimmerState: bool
     IOptionalFeaturePowerUpSwitchState: bool
     IOptionalFeatureOnMinLevel: bool
@@ -655,6 +565,7 @@ class DimmerFunctionalChannel(_BaseFunctionalChannel):
     profileMode: ProfileMode
     userDesiredProfileMode: ProfileMode
     on: bool
+    switchVisualization: str
     dimLevel: float
     rampTime: float
     dimmingMode: Literal["REGULAR_DIMMING"]
@@ -678,11 +589,8 @@ class MotionDetectionChannelSupportedOptionalFeatures(TypedDict):
     IOptionalFeatureBlockingPeriod: bool
     IOptionalFeatureIlluminationCalculationThree: bool | None  # either exists
     IOptionalFeatureIlluminationCalculationTwo: bool | None
-    IFeatureLightGroupSensorChannel: bool
-    IOptionalFeatureMotionSensorZones: bool
-    IOptionalFeatureMotionSensorZoneSensitivity: bool
-    IOptionalFeatureMotionSensorSensitivity: bool
-    IFeatureWateringGroupSensorChannel: bool
+    IFeatureLightGroupSensorChannel: bool | None
+    IOptionalFeatureMotionSensorSensitivity: bool | None
 
 
 class MotionDetectionFunctionalChannel(_BaseFunctionalChannel):
@@ -761,6 +669,10 @@ class DeviceSabotageFunctionalChannel(_BaseFunctionalChannel):
     dataDecodingFailedError: None
     ticVersionError: None
     sabotage: bool
+    deviceCanBusError: None
+    notRechargeableBattery: None
+    fanControlMode: None
+    sabotageSensitivity: None
 
 
 class _MotionDetectorDevice(TypedDict):
@@ -864,6 +776,9 @@ class DevicePermanentFullRxFunctionalChannel(_BaseFunctionalChannel):
     noDataFromLinkyError: None
     dataDecodingFailedError: None
     ticVersionError: None
+    deviceCanBusError: None
+    notRechargeableBattery: None
+    fanControlMode: None
     permanentFullRx: bool
 
 
@@ -887,8 +802,7 @@ class WallMountedThermostatWithoutDisplayChannelSupportedOptionalFeatures(TypedD
 class WallMountedThermostatProSupportedOptionalFeatures(
     WallMountedThermostatWithoutDisplayChannelSupportedOptionalFeatures
 ):
-    IOptionalFeatureClimateControlDisplayCarbonSupported: bool
-    IOptionalFeatureClimateControlDisplayHumidityOnlySupported: bool
+    IOptionalFeatureThermostatCoolingSupported: bool
 
 
 class _WallMountedThermostatFunctionalChannel(_BaseFunctionalChannel):
@@ -1102,25 +1016,15 @@ class SmokeDetectorDevice(TypedDict):
 
 
 class UniversalLightSupportedOptionalFeatures(TypedDict):
-    IOptionalFeaturePowerUpColorTemperature: bool
-    IOptionalFeatureDimmerState: bool
-    IFeatureConnectedDeviceUnreach: bool
-    IOptionalFeatureHardwareColorTemperature: bool
-    IOptionalFeatureLightScene: bool
-    IFeatureLimitFailure: bool
-    IOptionalFeatureHueSaturationValue: bool
-    IOptionalFeatureChannelActive: bool
-    IFeatureControlGearFailure: bool
-    IOptionalFeatureColorTemperatureDim2Warm: bool
-    IFeatureLightProfileActuatorChannel: bool
-    IOptionalFeatureLightSceneWithShortTimes: bool
-    IFeatureLightGroupActuatorChannel: bool
-    IFeatureLampFailure: bool
-    IOptionalFeatureColorTemperature: bool
-    IOptionalFeaturePowerUpDimmerState: bool
-    IOptionalFeaturePowerUpHueSaturationValue: bool
-    IOptionalFeatureColorTemperatureDynamicDaylight: bool
-    IOptionalFeaturePowerUpSwitchState: bool
+    IOptionalFeatureDimmerState: bool | None
+    IOptionalFeatureLightScene: bool | None
+    IOptionalFeatureHueSaturationValue: bool | None
+    IFeatureLightProfileActuatorChannel: bool | None
+    IOptionalFeatureLightSceneWithShortTimes: bool | None
+    IFeatureLightGroupActuatorChannel: bool | None
+    IOptionalFeaturePowerUpDimmerState: bool | None
+    IOptionalFeaturePowerUpHueSaturationValue: bool | None
+    IOptionalFeaturePowerUpSwitchState: bool | None
     IOptionalFeatureOnMinLevel: bool
 
 
@@ -1154,6 +1058,7 @@ class UniversalLightFunctionalChannel(_BaseFunctionalChannel):
     powerUpColorTemperature: int
     minimalColorTemperature: int
     maximumColorTemperature: int
+    switchVisualization: str | None
 
 
 class RGBWDimmerDevice(TypedDict):
@@ -1261,10 +1166,9 @@ class PushButton6ChannelDevice(TypedDict):
     liveUpdateState: LiveUpdateState
 
 
-class AccessControllerSupportedOptionalFeatures(
-    DeviceOperationlockSupportedOptionalFeatures
-):
-    IOptionalFeatureFilteredMulticastRouter: bool
+class AccessControllerSupportedOptionalFeatures(TypedDict):
+    IOptionalFeatureFilteredMulticastRouter: bool | None
+    IOptionalFeatureDutyCycle: bool | None
 
 
 class AccessControllerFunctionalChannel(_BaseFunctionalChannel):
@@ -1328,6 +1232,9 @@ class AccessControllerFunctionalChannel(_BaseFunctionalChannel):
     dutyCycleLevel: float
     carrierSenseLevel: float
     filteredMulticastRoutingEnabled: bool
+    deviceCanBusError: None
+    notRechargeableBattery: None
+    fanControlMode: None
 
 
 class NotificationCategoryActiveMap(TypedDict):
@@ -1371,12 +1278,7 @@ class StatusNotificationSettings(TypedDict):
 
 class NotificationLightSupportedFeatures(TypedDict):
     IOptionalFeatureStatusNotificationSettings: bool
-    IOptionalFeaturePowerUpNotificationLightState: bool
-    IFeatureNotificationLightGroupActuatorChannel: bool
     IFeatureOpticalSignalBehaviourState: bool
-    IOptionalFeaturePowerUpDimmerState: bool
-    IOptionalFeaturePowerUpSwitchState: bool
-    IOptionalFeatureOnMinLevel: bool
 
 
 SimpleRGBColor = Literal[
@@ -1400,6 +1302,7 @@ class NotificationLightFunctionalChannel(_BaseFunctionalChannel):
     powerUpSimpleRGBColor: SimpleRGBColor
     powerUpOpticalSignalBehaviour: OpticalSignalBehaviour
     onMinLevel: float | None
+    switchVisualization: str | None
 
 
 FunctionalChannel: TypeAlias = (
@@ -1890,6 +1793,12 @@ class AccessControl(TypedDict):
 class Energy(TypedDict):
     functionalGroups: list[None]
     energyDashboardChannels: list[None]
+    consumptionCurtailmentChannels: list[None]
+    productionCurtailmentChannels: list[None]
+    productionCurtailed: bool
+    productionCurtailmentEnd: None
+    consumptionCurtailed: bool
+    consumptionCurtailmentEnd: None
     solution: Literal["ENERGY"]
     active: bool
 
@@ -1924,6 +1833,10 @@ class IndoorClimate(TypedDict):
     demandControlledVentilationGroups: list[None]
     demandControlledVentilationSpecificGroups: dict[None, None]
     lastVacationTemperature: None
+    demandControlledVentilationMode: None
+    demandControlledVentilationModeStartTime: None
+    demandControlledVentilationModeEndTime: None
+    notSelectableDemandControlledVentilationModes: list[None]
     solution: Literal["INDOOR_CLIMATE"]
     active: bool
 
@@ -1997,6 +1910,7 @@ class SecurityAndAlarm(TypedDict):
     intrusionAlertThroughSmokeDetectors: bool
     securityZoneActivationMode: Literal["ACTIVATION_IF_ALL_IN_VALID_STATE"]
     deviceChannelSpecificFunction: dict[None, None]
+    waterAlarmGroups: list[None]
     activationInProgress: bool
     solution: Literal["SECURITY_AND_ALARM"]
     active: bool
@@ -2080,6 +1994,7 @@ class HomeExtension(TypedDict):
     developerModeDeactivationAllowed: bool
     pluginApiExposed: bool
     developerModeActivationTimestamp: int
+    telemetryEnabled: Literal["DEFAULT_DISABLED"]
 
 
 class LiveOTAUStatus(TypedDict):
@@ -2118,6 +2033,7 @@ class RuleMetaData(TypedDict):
     executionCounterOfDay: int
     specialInterestCategories: list[Literal["pushNotification"]]
     lastExecutionTimestamp: int | None
+    serviceId: None
 
 
 class VoiceControlSettings(TypedDict):
@@ -2138,11 +2054,18 @@ class Weather(TypedDict):
     vaporAmount: float
 
 
+class HomeSuportedOptionalFeatures(TypedDict):
+    IFeatureGeofenceAutomation: bool
+    IFeatureC2cFiltering: bool
+    IFeatureConciergeAvatar: bool
+
+
 class Home(TypedDict):
     weather: Weather
     metaGroups: list[str]
     clients: list[str]
     connected: bool
+
     currentAPVersion: str
     availableAPVersion: None
     timeZoneId: str
@@ -2183,6 +2106,10 @@ class Home(TypedDict):
     exchangeTimestamp: None
     fixedDefaultGroups: dict[None, None]
     deviceDebugLoggingAllowed: None
+    residentGroups: list[None]
+    geofenceLocations: list[None]
+    conciergeAvatarIcon: None
+    supportedOptionalFeatures: HomeSuportedOptionalFeatures
     id: str
     userRightsManagementSupported: bool
     hueLinkingSupported: bool
@@ -2263,7 +2190,7 @@ Event: TypeAlias = (
 
 
 class EventOrigin(TypedDict):
-    originType: Literal["DEVICE", "INTERNAL", "CLIENT"]
+    originType: Literal["DEVICE", "INTERNAL", "CLIENT", "RULE"]
     id: str
 
 

@@ -69,8 +69,6 @@ def _validate_typed_dict(
     if record_unexpected:
         extras = [str(k) for k in value.keys() if k not in annotations]
         if extras:
-            for ex in extras:
-                issues.append(f"{name}.{ex}: unexpected key")
             if not allow_extra:
                 raise KeyError(f"{name}: unexpected key(s) {extras}")
 

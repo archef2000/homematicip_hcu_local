@@ -1176,19 +1176,17 @@ class HCUController:
         summary_types = [
             ev["pushEventType"] for ev in body["eventTransaction"]["events"].values()
         ]
-        self.logger.info("HMIP system event received (types=%s)", summary_types)
+        self.logger.debug("HMIP system event received (types=%s)", summary_types)
         try:
             issues = validate_annotated(body)
             if issues:
-                unexpected = [i for i in issues if "unexpected key" in i]
-                log_fn = self.logger.error if unexpected else self.logger.warning
-                log_fn(
+                self.logger.warning(
                     "HMIP system event body type issues (first %d): %s, body=%s",
                     min(10, len(issues)),
                     issues[:10],
                     body,
                 )
-                self.logger.info(body)
+                self.logger.warning(body)
         except Exception:  # pragma: no cover - defensive
             self.logger.exception("validate_annotated failed for system event body")
 
