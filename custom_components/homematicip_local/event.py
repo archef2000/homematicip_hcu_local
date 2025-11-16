@@ -178,9 +178,11 @@ class HCUKeyChannelEventEntity(_BaseHcuEventEntity):
         self.async_on_remove(self._unsub)
 
     def _handle_device_event(self, ts: int, ev: DeviceChannelEvent) -> None:
+        if ev["channelIndex"] != int(self._channel_key):
+            return
         data = {
             "device_id": self._device_id,
-            "functionalChannelIndex": ev["channelIndex"],
+            "functionalChannelIndex": ev["functionalChannelIndex"],
             "channelEventType": ev["channelEventType"],
             "channelIndex": ev["channelIndex"],
             "timestamp": ts,
