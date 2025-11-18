@@ -1440,7 +1440,7 @@ class HCUController:
                 HmIPDeviceControlRequestPaths.setDimLevel,
                 body,
             )
-            self.logger.error(
+            self.logger.debug(
                 "Set dim level for device %s ch %s -> %s, %s",
                 device_id,
                 channel_index,

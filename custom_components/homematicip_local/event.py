@@ -189,6 +189,7 @@ class HCUKeyChannelEventEntity(_BaseHcuEventEntity):
         }
         event_type = ev["channelEventType"].lower()
         self._trigger_event(event_type, data)
+        self._async_write_ha_state_from_call_soon_threadsafe()
 
 
 async def async_setup_entry(
