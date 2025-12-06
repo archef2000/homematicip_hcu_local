@@ -111,7 +111,7 @@ class HCUHeatingGroupClimate(ClimateEntity):
     @override
     def current_temperature(self) -> float | None:
         g = self._group()
-        return g["valveActualTemperature"]
+        return g["actualTemperature"] or g["valveActualTemperature"]
 
     @cached_property
     @override
