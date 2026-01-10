@@ -2176,6 +2176,14 @@ class SecurityJournalEvent(TypedDict):
     pushEventType: Literal["SECURITY_JOURNAL_CHANGED"]
 
 
+class InclusionRequestedEvent(TypedDict):
+    pushEventType: Literal["INCLUSION_REQUESTED"]
+    deviceType: str
+    deviceId: str
+    errorReason: Literal["NO_ERROR"]
+    exchangeErrorReason: Literal["UNSUPPORTED"]
+
+
 Event: TypeAlias = (
     HomePushEvent
     | DevicePushEvent
@@ -2186,6 +2194,7 @@ Event: TypeAlias = (
     | ClientRemovedPushEvent
     | DeviceChannelEvent
     | SecurityJournalEvent
+    | InclusionRequestedEvent
 )
 
 
