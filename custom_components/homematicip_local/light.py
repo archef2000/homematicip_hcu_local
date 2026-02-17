@@ -133,7 +133,7 @@ class _BaseHCULight(LightEntity):
 
 
 class HCUAccessPointNotificationLight(_BaseHCULight):
-    _attr_supported_color_modes: set[ColorMode] | set[str] | None = {
+    _attr_supported_color_modes: set[ColorMode] | None = {
         ColorMode.BRIGHTNESS
     }
     # Expose discrete simpleRGBColorState values as light effects
@@ -153,7 +153,7 @@ class HCUAccessPointNotificationLight(_BaseHCULight):
 
     @cached_property
     @override
-    def color_mode(self) -> ColorMode | str | None:
+    def color_mode(self) -> ColorMode | None:
         return ColorMode.BRIGHTNESS
 
     @cached_property
@@ -226,13 +226,13 @@ class HCUAccessPointNotificationLight(_BaseHCULight):
 class HCUDimmerLight(_BaseHCULight):
     """Light entity for any device channel with functionalChannelType DIMMER_CHANNEL."""
 
-    _attr_supported_color_modes: set[ColorMode] | set[str] | None = {
+    _attr_supported_color_modes: set[ColorMode] | None = {
         ColorMode.BRIGHTNESS
     }
 
     @cached_property
     @override
-    def color_mode(self) -> ColorMode | str | None:
+    def color_mode(self) -> ColorMode | None:
         return ColorMode.BRIGHTNESS
 
     def _min_on_level(self) -> float:
@@ -262,18 +262,11 @@ class HCUDimmerLight(_BaseHCULight):
         return None
 
     @override
-    async def async_turn_on(self, **kwargs: Mapping[str, object]) -> None:
-        v = kwargs.get(ATTR_BRIGHTNESS)
-        if isinstance(v, int):
-            dim = max(0.0, min(1.0, float(v) / 255.0))
+    async def async_turn_on(self, **kwargs: int) -> None:
+        if ATTR_BRIGHTNESS in kwargs:
+            dim = max(0.0, min(1.0, float(kwargs[ATTR_BRIGHTNESS]) / 255.0))
         else:
-            ch = self._get_channel()
-            cur = ch.get("dimLevel")
-            dim = (
-                float(cur)
-                if isinstance(cur, (int, float)) and cur > 0
-                else self._min_on_level()
-            )
+            dim = 1.0
         ctrl = self._coordinator.controller
         func = partial(
             ctrl.set_dimmer_level,
@@ -298,7 +291,7 @@ class HCUDimmerLight(_BaseHCULight):
 class HCUSwitchMeasuringLight(_BaseHCULight):
     """Treat SWITCH_MEASURING_CHANNEL as a light when light features are present."""
 
-    _attr_supported_color_modes: set[ColorMode] | set[str] | None = {ColorMode.ONOFF}
+    _attr_supported_color_modes: set[ColorMode] | None = {ColorMode.ONOFF}
 
     @cached_property
     @override
@@ -376,7 +369,7 @@ class HCUUniversalLight(_BaseHCULight):
         feats = ch["supportedOptionalFeatures"]
         support_hs = feats["IOptionalFeatureHueSaturationValue"]
         modes: set[ColorMode] = {ColorMode.HS} if support_hs else {ColorMode.BRIGHTNESS}
-        self._attr_supported_color_modes: set[ColorMode] | set[str] | None = modes
+        self._attr_supported_color_modes: set[ColorMode]  | None = modes
 
     @override
     def _get_channel(self) -> UniversalLightFunctionalChannel:
@@ -393,7 +386,7 @@ class HCUUniversalLight(_BaseHCULight):
 
     @cached_property
     @override
-    def color_mode(self) -> ColorMode | str | None:
+    def color_mode(self) -> ColorMode  | None:
         ch = self._get_channel()
         feats = ch["supportedOptionalFeatures"]
         support_hs = feats["IOptionalFeatureHueSaturationValue"]

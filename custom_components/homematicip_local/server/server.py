@@ -382,7 +382,7 @@ class HCUController:
         plugin_str = ""
         if message["pluginId"] != self.plugin_id:
             plugin_str = f', pluginId: "{message["pluginId"]}"'
-        self.logger.info(
+        self.logger.debug(
             'Plugin message received: id: "%s", type: "%s"%s, body: "%s"',
             message["id"],
             message["type"],
@@ -1207,7 +1207,7 @@ class HCUController:
                 events: dict[str, Event] = body["eventTransaction"]["events"]
                 for ev_map in events.values():
                     if ev_map["pushEventType"] == "DEVICE_CHANNEL_EVENT":
-                        self.logger.info("HMIP DEVICE_CHANNEL_EVENT: %s", ev_map)
+                        self.logger.debug("HMIP DEVICE_CHANNEL_EVENT: %s", ev_map)
                         ts = body["eventTransaction"]["timestamp"]
                         did = ev_map["deviceId"]
                         if did:
