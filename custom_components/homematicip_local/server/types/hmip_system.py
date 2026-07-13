@@ -1228,13 +1228,19 @@ class AccessControllerFunctionalChannel(_BaseFunctionalChannel):
     noDataFromLinkyError: None
     dataDecodingFailedError: None
     ticVersionError: None
+    deviceCanBusError: None
+    notRechargeableBattery: None
+    fanControlMode: None
+    input1CoproEnabled: None
+    input2CoproEnabled: None
+    input3CoproEnabled: None
+    input4CoproEnabled: None
+    bootedRecently: bool
+    lastBootTimestamp: None
     signalBrightness: float
     dutyCycleLevel: float
     carrierSenseLevel: float
     filteredMulticastRoutingEnabled: bool
-    deviceCanBusError: None
-    notRechargeableBattery: None
-    fanControlMode: None
 
 
 class NotificationCategoryActiveMap(TypedDict):
@@ -1799,6 +1805,7 @@ class Energy(TypedDict):
     productionCurtailmentEnd: None
     consumptionCurtailed: bool
     consumptionCurtailmentEnd: None
+    failsafeModeActive: bool
     solution: Literal["ENERGY"]
     active: bool
 
@@ -1911,6 +1918,13 @@ class SecurityAndAlarm(TypedDict):
     securityZoneActivationMode: Literal["ACTIVATION_IF_ALL_IN_VALID_STATE"]
     deviceChannelSpecificFunction: dict[None, None]
     waterAlarmGroups: list[None]
+    deviceSecurityZoneActivationWithIgnoreList: bool
+    automationSecurityZoneActivationWithIgnoreList: bool
+    c2cSecurityZoneActivationWithIgnoreList: bool
+    intrusionAlarmPhoneNumber: str
+    safetyAlarmPhoneNumber: str
+    securityZoneActivationModeChangeStatus: None
+    activationInProgressZones: None
     activationInProgress: bool
     solution: Literal["SECURITY_AND_ALARM"]
     active: bool
@@ -2018,6 +2032,8 @@ class PluginInformation(TypedDict):
     "remote have no update"
     lastPluginUpdateStateChanged: int | None
     "remote have no update"
+    version: str | None
+    availableVersion: None
 
 
 PluginInformationMap: TypeAlias = dict[str, PluginInformation]
@@ -2055,6 +2071,7 @@ class Weather(TypedDict):
 
 
 class HomeSuportedOptionalFeatures(TypedDict):
+    IFeatureSecurityZoneActivationModeRequestBased: bool
     IFeatureGeofenceAutomation: bool
     IFeatureC2cFiltering: bool
     IFeatureConciergeAvatar: bool
@@ -2111,10 +2128,11 @@ class Home(TypedDict):
     conciergeAvatarIcon: None
     supportedOptionalFeatures: HomeSuportedOptionalFeatures
     id: str
+    externalServiceSupportingMap: ExternalServiceSupportingMap
     userRightsManagementSupported: bool
     hueLinkingSupported: bool
     measuringBaseURL: str
-    externalServiceSupportingMap: ExternalServiceSupportingMap
+    c2cFilteringStates: dict[None, None]
 
 
 class SystemState(TypedDict):
