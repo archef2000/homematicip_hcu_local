@@ -14,16 +14,21 @@ from .server.types.hmip_system import SystemState
 
 class HCUCoordinator(DataUpdateCoordinator[SystemState]):
     controller: HCUController
+    entry_id: str
     _remove_controller_listener: Callable[[], None] | None
 
-    def __init__(self, hass: HomeAssistant, controller: HCUController) -> None:
+    def __init__(
+        self, hass: HomeAssistant, controller: HCUController, entry: ConfigEntry
+    ) -> None:
         super().__init__(
             hass,
+            config_entry=entry,
             logger=controller.logger,
             name="HCU System State",
             update_interval=timedelta(seconds=30),
         )
         self.controller = controller
+        self.entry_id = entry.entry_id
         self._remove_controller_listener = controller.add_state_listener(
             self._on_state_changed
         )
@@ -73,7 +78,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     controller.start()
     _ready = await hass.async_add_executor_job(controller.wait_until_ready, 5.0)
 
-    coordinator = HCUCoordinator(hass, controller)
+    coordinator = HCUCoordinator(hass, controller, entry)
     await coordinator.async_config_entry_first_refresh()
 
     if DOMAIN not in hass.data:

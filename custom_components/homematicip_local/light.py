@@ -100,7 +100,9 @@ class _BaseHCULight(LightEntity):
         area = area_reg.async_get_area_by_name(area_name)
         if area is None:
             area = area_reg.async_create(name=area_name)
-        device = dev_reg.async_get_device(identifiers={(DOMAIN, self._device_id)})
+        device = dev_reg.async_get_device_by_identifier(
+            (DOMAIN, self._device_id), self._coordinator.entry_id
+        )
         if device and device.area_id != area.id:
             _ = dev_reg.async_update_device(device.id, area_id=area.id)
 
