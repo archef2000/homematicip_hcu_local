@@ -169,10 +169,16 @@ class DeviceOperationlockFunctionalChannel(_BaseFunctionalChannel):
     noDataFromLinkyError: None
     dataDecodingFailedError: None
     ticVersionError: None
-    operationLockActive: bool
     deviceCanBusError: None
     notRechargeableBattery: None
     fanControlMode: None
+    input1CoproEnabled: None
+    input2CoproEnabled: None
+    input3CoproEnabled: None
+    input4CoproEnabled: None
+    bootedRecently: bool
+    lastBootTimestamp: None
+    operationLockActive: bool
 
 
 class HeatingThermostatDevice(TypedDict):
@@ -225,7 +231,7 @@ class DeviceBaseSupportedOptionalFeatures(TypedDict):
 
 class DeviceBaseFunctionalChannel(_BaseFunctionalChannel):
     functionalChannelType: Literal["DEVICE_BASE"]
-    unreach: bool
+    unreach: None | bool
     lowBat: bool | None
     routerModuleEnabled: bool
     multicastRoutingEnabled: bool
@@ -234,7 +240,7 @@ class DeviceBaseFunctionalChannel(_BaseFunctionalChannel):
     "negative (normal), 128"
     rssiPeerValue: None | int
     configPending: bool
-    dutyCycle: bool
+    dutyCycle: None | bool
     deviceOverloaded: bool
     coProUpdateFailure: bool
     coProFaulty: bool
@@ -284,18 +290,24 @@ class DeviceBaseFunctionalChannel(_BaseFunctionalChannel):
     deviceCanBusError: None
     notRechargeableBattery: None
     fanControlMode: None
+    input1CoproEnabled: None
+    input2CoproEnabled: None
+    input3CoproEnabled: None
+    input4CoproEnabled: None
+    bootedRecently: None | bool
+    lastBootTimestamp: int | None
 
 
 class MultiNodeInputChannelSupportedOptionalFeatures(TypedDict):
-    IFeatureDoorLockAuthorizationSensorChannel: bool
-    IOptionalFeatureLongPressSupported: bool
-    IFeatureGarageGroupSensorChannel: bool
+    # IFeatureDoorLockAuthorizationSensorChannel: bool
+    # IOptionalFeatureLongPressSupported: bool
+    # IFeatureGarageGroupSensorChannel: bool
     IOptionalFeatureDoorBellSensorEventTimestamp: bool
-    IFeatureLightGroupSensorChannel: bool
-    IOptionalFeatureWindowState: bool
-    IOptionalFeatureEventDelay: bool
-    IFeatureAccessAuthorizationSensorChannel: bool
-    IFeatureShadingGroupSensorChannel: bool
+    # IFeatureLightGroupSensorChannel: bool
+    # IOptionalFeatureWindowState: bool
+    # IOptionalFeatureEventDelay: bool
+    # IFeatureAccessAuthorizationSensorChannel: bool
+    # IFeatureShadingGroupSensorChannel: bool
 
 
 class MultiNodeInputChannelFunctionalChannel(_BaseFunctionalChannel):
@@ -568,7 +580,7 @@ class DimmerFunctionalChannel(_BaseFunctionalChannel):
     switchVisualization: str
     dimLevel: float
     rampTime: float
-    dimmingMode: Literal["REGULAR_DIMMING"]
+    dimmingMode: Literal["REGULAR_DIMMING", "LED_DIMMING"]
     dimLevelLowest: float
     dimLevelHighest: float
     deviceOverloaded: bool
@@ -591,6 +603,7 @@ class MotionDetectionChannelSupportedOptionalFeatures(TypedDict):
     IOptionalFeatureIlluminationCalculationTwo: bool | None
     IFeatureLightGroupSensorChannel: bool | None
     IOptionalFeatureMotionSensorSensitivity: bool | None
+    IOptionalFeatureMotionVisualization: bool | None
 
 
 class MotionDetectionFunctionalChannel(_BaseFunctionalChannel):
@@ -606,6 +619,7 @@ class MotionDetectionFunctionalChannel(_BaseFunctionalChannel):
     motionBufferActive: bool
     blockingPeriod: float
     motionSensorSensitivity: int
+    motionVisualizationEnabled: bool
     motionDetected: bool
     motionSensorZones: None
     motionSensorZoneSensitivityMap: dict[None, None]
@@ -668,6 +682,12 @@ class DeviceSabotageFunctionalChannel(_BaseFunctionalChannel):
     noDataFromLinkyError: None
     dataDecodingFailedError: None
     ticVersionError: None
+    input1CoproEnabled: None
+    input2CoproEnabled: None
+    input3CoproEnabled: None
+    input4CoproEnabled: None
+    bootedRecently: bool
+    lastBootTimestamp: None
     sabotage: bool
     deviceCanBusError: None
     notRechargeableBattery: None
@@ -779,6 +799,12 @@ class DevicePermanentFullRxFunctionalChannel(_BaseFunctionalChannel):
     deviceCanBusError: None
     notRechargeableBattery: None
     fanControlMode: None
+    input1CoproEnabled: None
+    input2CoproEnabled: None
+    input3CoproEnabled: None
+    input4CoproEnabled: None
+    bootedRecently: bool
+    lastBootTimestamp: None
     permanentFullRx: bool
 
 
@@ -1235,8 +1261,8 @@ class AccessControllerFunctionalChannel(_BaseFunctionalChannel):
     input2CoproEnabled: None
     input3CoproEnabled: None
     input4CoproEnabled: None
-    bootedRecently: bool
-    lastBootTimestamp: None
+    bootedRecently: bool | None
+    lastBootTimestamp: int | None
     signalBrightness: float
     dutyCycleLevel: float
     carrierSenseLevel: float
@@ -1551,6 +1577,7 @@ class HeatingHumidityLimiterGroup(_BaseGroup):
 class HeatingGroupOptionalSupportedFeatures(TypedDict):
     IOptionalFeatureHumidityLimitPre: bool
     IOptionalFeatureHumidityLimitPreAlarm: bool
+    IOptionalFeatureDewPoint: bool
     IOptionalFeatureSwitchClimateFunction: bool
     IOptionalFeatureSwitchClimateHeatingCoolingEnabled: bool
     IOptionalFeatureWindowOpenTemperatureCooling: bool
@@ -1607,6 +1634,8 @@ class HeatingGroup(_BaseGroup):
     switchClimateHeatingEnable: bool
     windowOpenTemperatureCooling: float
     valveActualTemperature: float
+    dewPointControlEnabled: bool
+    dewPointTemperature: float
 
 
 class HotWaterGroup(_BaseGroup):
