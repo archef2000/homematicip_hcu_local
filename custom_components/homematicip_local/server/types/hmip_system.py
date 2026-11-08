@@ -23,6 +23,10 @@ class AppClient(_BaseClient):
     clientType: Literal["APP"]
     userRole: Literal["ADMIN", "USER"]
     userRoleChangeStatus: UserRoleChangeStatus
+    adminRightRequestedClientId: None
+    adminRightRequestedTimestamp: None
+    adminRightAutomaticallyGrantedTimestamp: None
+    adminPinAttempts: int
     adminInitializationRequired: bool
 
 
@@ -54,6 +58,7 @@ ActionParameter: TypeAlias = Literal["NOT_CUSTOMISABLE"]
 class PushButtonSupportedOptionalFeatures(TypedDict):
     IOptionalFeatureLongPressSupported: bool
     IOptionalFeatureDoublePressTime: bool
+    IOptionalFeatureLongPressDuration: bool
     IFeatureLightGroupSensorChannel: bool | None
     IFeatureShadingGroupSensorChannel: bool | None
 
@@ -75,6 +80,7 @@ class SingleKeyFunctionalChannel(_BaseFunctionalChannel):
     acousticSendStateEnabled: bool
     actionParameter: ActionParameter
     doublePressTime: float
+    longPressDuration: float
 
 
 LiveUpdateState: TypeAlias = Literal["LIVE_UPDATE_NOT_SUPPORTED"]
@@ -321,6 +327,7 @@ class MultiNodeInputChannelFunctionalChannel(_BaseFunctionalChannel):
     doorBellSensorEventTimestamp: None
     actionParameter: Literal["NOT_CUSTOMISABLE"]
     eventDelay: int
+    longPressDuration: float
 
 
 class DoorBellContactInterfaceDevice(TypedDict):
@@ -574,7 +581,7 @@ class DimmerFunctionalChannel(_BaseFunctionalChannel):
     functionalChannelType: Literal["DIMMER_CHANNEL"]
     channelRole: Literal["DIMMING_ACTUATOR"]
     supportedOptionalFeatures: DimmerSupportedOptionalFeatures
-    profileMode: ProfileMode
+    profileMode: ProfileMode | None
     userDesiredProfileMode: ProfileMode
     on: bool
     switchVisualization: str
@@ -1741,6 +1748,7 @@ class ExtendedLinkedGarageDoorGroup(_BaseGroup):
     groupVisibility: Literal["VISIBLE"]
     ventilationPositionSupported: bool
     impulseDuration: float
+    triggered: bool
 
 
 class HeatingChangeoverGroup(_BaseGroup):
@@ -2099,11 +2107,21 @@ class Weather(TypedDict):
     vaporAmount: float
 
 
+class VacationMode(TypedDict):
+    setPointTemperature: float
+    waterSupplyStopChannels: list[None]
+    vacationModeActive: bool
+    vacationTimeSpans: list[None]
+    globalVacationModeUsed: bool
+
+
 class HomeSuportedOptionalFeatures(TypedDict):
     IFeatureSecurityZoneActivationModeRequestBased: bool
     IFeatureGeofenceAutomation: bool
     IFeatureC2cFiltering: bool
+    IFeatureVacationMode: bool
     IFeatureConciergeAvatar: bool
+    IFeatureGeofencing: bool
 
 
 class Home(TypedDict):
@@ -2156,6 +2174,7 @@ class Home(TypedDict):
     geofenceLocations: list[None]
     conciergeAvatarIcon: None
     supportedOptionalFeatures: HomeSuportedOptionalFeatures
+    vacationMode: VacationMode
     id: str
     externalServiceSupportingMap: ExternalServiceSupportingMap
     userRightsManagementSupported: bool
