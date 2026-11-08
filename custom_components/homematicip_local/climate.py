@@ -32,7 +32,7 @@ class HCUHeatingGroupClimate(ClimateEntity):
     _group_id: str
     _attr_name: str | None
     _attr_unique_id: str | None
-    _attr_temperature_unit: str = UnitOfTemperature.CELSIUS
+    _attr_native_temperature_unit: str = UnitOfTemperature.CELSIUS
     _attr_supported_features: ClimateEntityFeature = (
         ClimateEntityFeature.TARGET_TEMPERATURE
     )
@@ -110,13 +110,13 @@ class HCUHeatingGroupClimate(ClimateEntity):
 
     @cached_property
     @override
-    def current_temperature(self) -> float | None:
+    def native_current_temperature(self) -> float | None:
         g = self._group()
         return g["actualTemperature"] or g["valveActualTemperature"]
 
     @cached_property
     @override
-    def target_temperature(self) -> float | None:
+    def native_target_temperature(self) -> float | None:
         g: HeatingGroup = self._group()
         return g["setPointTemperature"]
 
