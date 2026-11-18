@@ -211,8 +211,8 @@ async def async_setup_entry(
         for ent in all_entities:
             for attr in (
                 "hvac_mode",
-                "current_temperature",
-                "target_temperature",
+                "native_current_temperature",
+                "native_target_temperature",
                 "current_humidity",
                 "min_temp",
                 "max_temp",
