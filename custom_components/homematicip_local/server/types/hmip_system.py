@@ -183,7 +183,7 @@ class DeviceOperationlockFunctionalChannel(_BaseFunctionalChannel):
     input3CoproEnabled: None
     input4CoproEnabled: None
     bootedRecently: bool
-    lastBootTimestamp: None
+    lastBootTimestamp: int | None
     operationLockActive: bool
 
 
@@ -247,7 +247,7 @@ class DeviceBaseFunctionalChannel(_BaseFunctionalChannel):
     rssiPeerValue: None | int
     configPending: bool
     dutyCycle: None | bool
-    deviceOverloaded: bool
+    deviceOverloaded: bool | None
     coProUpdateFailure: bool
     coProFaulty: bool
     coProRestartNeeded: bool
